@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroSanity</title>
+    <link rel="stylesheet" href="static/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bitter:400,700">
+    <link rel="stylesheet" href="static/assets/css/Footer-Basic.css">
+    <link rel="stylesheet" href="static/assets/css/Header-Dark.css">
+    <link rel="stylesheet" href="static/assets/css/Pretty-Search-Form.css">
+    <link rel="stylesheet" href="static/assets/css/styles.css">
+</head>
+
+<body style="background-color:#444444;">
+    <div style="background-color:rgb(68,68,68);">
+        <div class="header-dark" style="background-image:url(&quot;0&quot;);background-color:rgb(68,68,68);">
+            <nav class="navbar navbar-default navigation-clean-search">
+                <div class="container">
+                    <div class="navbar-header"><a class="navbar-brand navbar-link" href="#">NeuroSanity</a>
+                        <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navcol-1">
+                        <ul class="nav navbar-nav">
+                            <li role="presentation"><a href="#">About</a></li>
+                        </ul>
+                        <p class="navbar-text navbar-right"> </p>
+                    </div>
+                </div>
+            </nav>
+            <div class="container hero" style="background-color:#444444;">
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <h2 class="text-center" style="color:rgb(251,245,245);">Search Titles</h2>
+                        <div class="form-group" style="min-width:-4px;padding:0px;padding-top:0px;padding-right:50px;padding-left:50px;">
+                            <form action="/search" method="post" class="search-form">
+                                <div class="input-group input-group-lg">
+                                    <div class="input-group-addon"><span><i class="glyphicon glyphicon-search"></i></span></div>
+                                    <input class="form-control" type="text" placeholder="I am looking for.." name="query">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" name="submit" type="submit">Search </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
