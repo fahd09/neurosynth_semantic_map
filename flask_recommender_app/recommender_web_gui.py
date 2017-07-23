@@ -11,7 +11,7 @@ from scipy.spatial.distance import cdist
 
 app = Flask(__name__)
 
-data_dir = '/Users/Home/gdrive/Lababdi/Neurosynth/data/'
+data_dir = './data/'
 neurosynth = pd.read_csv(os.path.join(data_dir,'studies_metadata.csv'), index_col=0)
 idxassignments = np.loadtxt(os.path.join(data_dir,'idx_assignments_6clusters.txt'), dtype=np.int )
 Fis = np.loadtxt(os.path.join(data_dir,'Fis_for_projection.txt') , delimiter=' ')
