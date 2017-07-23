@@ -1,9 +1,5 @@
 # neurosynth_semantic_map
 
-A repository for "The Latent Semantic Space and Corresponding Brain Regions of the Functional Neuroimaging Literature" -- http://www.biorxiv.org/content/early/2017/07/20/157826 Edit
-Add topics
-
-
 This repository contains all the analysis code to reproduce/explore the (currently) bioarxiv manuscript "The Latent Semantic Space and Corresponding Brain Regions of the Functional Neuroimaging Literature" [doi: 10.1101/157826](https://doi.org/10.1101/157826).
 
 ### Requirementes & dependances
