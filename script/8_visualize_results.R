@@ -36,11 +36,20 @@ FjAssign<-as.factor(FjAssign)
 stemmed_words_vec_9987 <- read.table(file=paste0(data_dir, '/stemmed_words_list.txt'))
 stemmed_words_vec_9987 <- as.character(stemmed_words_vec_9987$V1)
 pmids <- read.csv(paste0(data_dir, '/studies_metadata.csv'))
+pmids <- pmids[,-c(1)] # delete the index column that starts from 0
 
 load(paste0(data_dir, '/stemmed_words_freq_table.RData'))
 
 Fjs_words <- cbind(word=stemmed_words_vec_9987, FjAssign, freq=freq.df$freq, Fjs)
-Fis_studies <- cbind(Fis, FiAssign, pmids)
+Fis_studies <- cbind(pmids, Fis, FiAssign)
+
+# add ggplot default colors to fi_studies and fj_words table and save to results
+library(scales)
+colors <- hue_pal()(6)
+Fis_studies$color <- colors[Fis_studies$FiAssign]
+Fjs_words$color <- colors[Fjs_words$FjAssign]
+write.csv(Fis_studies, file = './results/studies_matrix.csv', row.names = FALSE)
+write.csv(Fjs_words, file = './results/words_matrix.csv', row.names = FALSE)
 
 clust_evals <- read.csv(paste0(data_dir, '/clustering_eval_results.csv'))
 
