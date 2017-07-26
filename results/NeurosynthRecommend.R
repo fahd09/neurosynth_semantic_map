@@ -60,7 +60,7 @@ NeurosynthRecommend <- function(number.of.neighbors=50,pmid=NA){
 	
 		
 	if( !(pmid %in% rownames(studies.coords)) ){
-		print("No PMID selected. We'll choose on for you!")
+		warning("PMID does not exist in this list. We'll choose on for you!")
 		pmid <- sample(rownames(studies.coords),1,1)
 	}
 	this.pmid <- which( rownames(studies.coords)==pmid )
