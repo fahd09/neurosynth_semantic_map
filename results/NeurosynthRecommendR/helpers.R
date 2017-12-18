@@ -38,7 +38,7 @@ studies.plot.panel <- function(studies.dat,color.selector=2,pmid="19789183",simi
   
 }
 
-stems.plot.panel <- function(stems.dat,color.selector=2,stem="",similar.set.size=10,alpha=.5){
+stems.plot.panel <- function(stems.dat,color.selector=2,stem="truth",similar.set.size=10,alpha=.5){
   
   if(color.selector==1){
     col <- stems.dat$color

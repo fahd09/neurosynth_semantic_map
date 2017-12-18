@@ -3,25 +3,27 @@ load('./data/studies.rda')
 load('./data/words.rda')
 source('./helpers.R')
 
-random.pmid <- sample(studies$pubmed,1)
-random.stem <- sample(words$word,1)
+random.pmid.loc <- sample(length(studies$pubmed),1)
+random.pmid <- studies$pubmed[random.pmid.loc]
+random.stem.loc <- sample(length(words$word),1)
+random.stem <- words$word[random.stem.loc]
 
 # Define UI ----
 ui <- fluidPage(
   
   titlePanel("Neurosynth RecommendR"),
-  
+    ## we need some UI output to come back and then update the UI based on choices.
+      ## we can do that much later.
   sidebarLayout(
     sidebarPanel(
-      helpText("Choose your own adventure"),
-      
+      #helpText("Choose your own adventure"),
+      textInput("pmid.or.word", label = "PMID/Stem input", value = "Enter PMID or Stem"),
+      #selectInput("pmid.or.word_dropdown", "Choose paper/word", choices = studies$pubmed, selected = random.pmid),
       radioButtons("papers.or.words", label = "Study (PMID) or Stem (words)", choices = list("Papers" = 1, "Words" = 2),selected = 1),
       radioButtons("dot.colors", label = "Color scheme", choices = list("Cluster colors" = 1, "Grey" = 2),selected = 2),
       #sliderInput("Zoom",label = "Range of interest:",min = 0, max = 100, value = c(0, 100)),
       sliderInput("zoom.hits", label = "Number of similar items:",min = 5, max = 100, value = 5),
-      sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .5),
-      textInput("pmid.or.word", label = "PMID/Stem input", value = random.pmid)#,
-      #selectInput("pmid.or.word_dropdown", h3("Choose paper/word"),choices = list("Choice 1" = 1, "Choice 2" = 2,"Choice 3" = 3), selected = 1),
+      sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .5)
       
     ),
     mainPanel(
@@ -43,23 +45,6 @@ server <- function(input, output) {
       }
     }
   )
-  
-  # output$radiobutton1 <- renderText({ 
-  #   paste("Radio button 1 is:", input$papers.or.words)
-  # })
-  # 
-  # output$radiobutton2 <- renderText({ 
-  #   paste("Radio button 2 is:", input$dot.colors)
-  # })  
-  # 
-  # output$slider <- renderText({ 
-  #   paste("Slider is:", input$zoom.hits)
-  # })    
-  # 
-  # output$inputbox <- renderText({ 
-  #   paste("Radio button 2 is:", input$pmid.or.word)
-  # })    
-  
 }
 
 # Run the app ----
