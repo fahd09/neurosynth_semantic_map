@@ -2,6 +2,10 @@ library(shiny)
 load('./data/studies.rda')
 load('./data/words.rda')
 source('./helpers.R')
+
+random.pmid <- sample(studies$pubmed,1)
+random.stem <- sample(words$word,1)
+
 # Define UI ----
 ui <- fluidPage(
   
@@ -11,23 +15,18 @@ ui <- fluidPage(
     sidebarPanel(
       helpText("Choose your own adventure"),
       
-      radioButtons("papers.or.words", h3("Papers or Words"), choices = list("Papers" = 1, "Words" = 2),selected = 1),
-      radioButtons("dot.colors", h3("Color scheme"), choices = list("Cluster colors" = 1, "Grey" = 2),selected = 2),
+      radioButtons("papers.or.words", label = "Study (PMID) or Stem (words)", choices = list("Papers" = 1, "Words" = 2),selected = 1),
+      radioButtons("dot.colors", label = "Color scheme", choices = list("Cluster colors" = 1, "Grey" = 2),selected = 2),
       #sliderInput("Zoom",label = "Range of interest:",min = 0, max = 100, value = c(0, 100)),
-      #selectInput("number.hits", h3("Number of similar papers/words"),choices = list("5" = 1, "10" = 2,"25" = 3, "50" = 4, "100" = 5), selected = 1),
-      sliderInput("zoom.hits", label = "Range of interest:",min = 5, max = 100, value = 5),
-      textInput("pmid.or.word", h3("Text input"), value = "Enter PMID or Word")#,
+      sliderInput("zoom.hits", label = "Number of similar items:",min = 5, max = 100, value = 5),
+      sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .5),
+      textInput("pmid.or.word", label = "PMID/Stem input", value = random.pmid)#,
       #selectInput("pmid.or.word_dropdown", h3("Choose paper/word"),choices = list("Choice 1" = 1, "Choice 2" = 2,"Choice 3" = 3), selected = 1),
-      #submitButton("Go!")
       
     ),
     mainPanel(
-      #textOutput("radiobutton1"),
-      #textOutput("radiobutton2"),
-      #textOutput("slider"),
-      #textOutput("inputbox")
-      #sliderInput("Zoom", label = "Range of interest:",min = 0, max = 100, value = c(0, 100))
-      plotOutput("nr.space")
+        ## ugh.
+      plotOutput("nr.space",height="600px",width="600px")
     )
   )
 )
@@ -38,9 +37,9 @@ server <- function(input, output) {
   output$nr.space <- renderPlot(
     {
       if(input$papers.or.words==1){
-        nr.base.studies.plot(studies)
+        studies.plot.panel(studies,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha)
       }else{
-        
+        stems.plot.panel(words,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha)
       }
     }
   )
