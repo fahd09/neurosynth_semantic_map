@@ -17,13 +17,13 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       #helpText("Choose your own adventure"),
-      textInput("pmid.or.word", label = "PMID/Stem input", value = "Enter PMID or Stem"),
+      textInput("pmid.or.word", label = "PMID/Stem input", value = "19789183"),
       #selectInput("pmid.or.word_dropdown", "Choose paper/word", choices = studies$pubmed, selected = random.pmid),
       radioButtons("papers.or.words", label = "Study (PMID) or Stem (words)", choices = list("Papers" = 1, "Words" = 2),selected = 1),
       radioButtons("dot.colors", label = "Color scheme", choices = list("Cluster colors" = 1, "Grey" = 2),selected = 2),
       #sliderInput("Zoom",label = "Range of interest:",min = 0, max = 100, value = c(0, 100)),
       sliderInput("zoom.hits", label = "Number of similar items:",min = 5, max = 100, value = 5),
-      sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .5)
+      sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .35)
       
     ),
     mainPanel(
