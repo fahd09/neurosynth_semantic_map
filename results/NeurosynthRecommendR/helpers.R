@@ -23,7 +23,7 @@ nr.base.plot <- function(dat,...){
 
 entry.and.neighbors <- function(dat,entry=NA,number.of.neighbors=10){
   #warning(entry)
-  
+
   if( !(entry %in% dat[,1] ) | is.na(entry)){
     warning("PMID or Stem does not exist in this list. We'll choose one for you!")
     entry <- sample(dat[,1],1)
