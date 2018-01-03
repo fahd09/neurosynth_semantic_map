@@ -1,6 +1,8 @@
 library(shiny)
 load('./data/studies.rda')
 load('./data/words.rda')
+load('./data/studies_top.101_indices.rda')
+load('./data/words_top.101_indices.rda')
 source('./helpers.R')
 
 random.pmid.loc <- sample(length(studies$pubmed),1)
@@ -24,11 +26,11 @@ ui <- fluidPage(
       #sliderInput("Zoom",label = "Range of interest:",min = 0, max = 100, value = c(0, 100)),
       sliderInput("zoom.hits", label = "Number of similar items:",min = 5, max = 100, value = 5),
       sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .35)
-      
+      ## we should add a "highlight journal" option button...
     ),
     mainPanel(
         ## ugh.
-      plotOutput("nr.space",height="600px",width="600px")
+      plotOutput("nr.space",height="1000px",width="1000px")
     )
   )
 )
@@ -39,9 +41,9 @@ server <- function(input, output) {
   output$nr.space <- renderPlot(
     {
       if(input$papers.or.words==1){
-        studies.plot.panel(studies,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha)
+        studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha)
       }else{
-        stems.plot.panel(words,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha)
+        stems.plot.panel(words,words_top.101_indices,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha)
       }
     }
   )
