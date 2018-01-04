@@ -21,16 +21,16 @@ nr.base.plot <- function(dat,...){
   
 }
 
-closest.studies <- function(entry=NA,number.of.neighbors=10){
-  
-
-}
-
-closest.words <- function(entry=NA,number.of.neighrbors=10){
-  
-  
-  
-}
+# closest.studies <- function(entry=NA,number.of.neighbors=10){
+#   
+# 
+# }
+# 
+# closest.words <- function(entry=NA,number.of.neighrbors=10){
+#   
+#   
+#   
+# }
 
   ## this can stay, but only as a helper that is never used by the App.
 entry.and.neighbors <- function(dat,entry=NA,number.of.neighbors=10){
@@ -45,7 +45,7 @@ entry.and.neighbors <- function(dat,entry=NA,number.of.neighbors=10){
   return(order(euc.dists)[1:(number.of.neighbors+1)]) #should be the full set. top is the entry.
 }
 
-studies.plot.panel <- function(studies.dat, studies.friends,color.selector=2,pmid="19789183",number.of.neighbors=10,alpha=.5){
+studies.plot.panel <- function(studies.dat, studies.friends,color.selector=2,pmid="19789183",number.of.neighbors=10,alpha=.5,x.axis=1,y.axis=2){
  
   if(color.selector==1){
     col <- studies.dat$color
@@ -53,34 +53,38 @@ studies.plot.panel <- function(studies.dat, studies.friends,color.selector=2,pmi
     col <- "grey80"
   }
   
+  #warn.user <- F
   #friends <- entry.and.neighbors(studies.dat,pmid,number.of.neighbors)
   if( !(pmid %in% studies.dat[,'pubmed']) ){
     #warning("YES")
-    pmid <- as.character(sample(studies.dat[,'pubmed'],1,1))
+    #pmid <- as.character(sample(studies.dat[,'pubmed'],1,1))
     #warning(pmid)
+    #warn.user <- T
+    nr.base.plot(studies.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+    return(T)
+  }else{
+    friends <- studies.friends[pmid,1:(number.of.neighbors+1)]
+    #warning(dim(friends))
+    
+      ## I need a real base plot for each...
+    #par(mfrow=c(2,2),oma=c(0,0,0,0))
+    nr.base.plot(studies.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+      points(studies.dat[friends[-1],paste0("component_",x.axis)],studies.dat[friends[-1],paste0("component_",y.axis)],col="black",pch=20,cex=.6)  
+      points(studies.dat[friends[1],paste0("component_",x.axis)],studies.dat[friends[1],paste0("component_",y.axis)],bg="white",pch=21,cex=.85)
+      
+    # nr.base.plot(studies.dat[,c("component_1","component_3")],xlab="Component 1",ylab="Component 3",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+    #   points(studies.dat[friends[-1],"component_1"],studies.dat[friends[-1],"component_3"],col="black",pch=20,cex=.6)  
+    #   points(studies.dat[friends[1],"component_1"],studies.dat[friends[1],"component_3"],bg="white",pch=21,cex=.85)
+    # 
+    # nr.base.plot(studies.dat[,c("component_4","component_5")],xlab="Component 4",ylab="Component 5",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+    #   points(studies.dat[friends[-1],"component_4"],studies.dat[friends[-1],"component_5"],col="black",pch=20,cex=.6)  
+    #   points(studies.dat[friends[1],"component_4"],studies.dat[friends[1],"component_5"],bg="white",pch=21,cex=.85)
+    
+    return(F)
   }
-  warning(pmid)
-  friends <- studies.friends[pmid,1:(number.of.neighbors+1)]
-  #warning(dim(friends))
-  
-    ## I need a real base plot for each...
-  par(mfrow=c(2,2),oma=c(0,0,0,0))
-  nr.base.plot(studies.dat[,c("component_1","component_2")],xlab="Component 1",ylab="Component 2",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
-    points(studies.dat[friends[-1],"component_1"],studies.dat[friends[-1],"component_2"],col="black",pch=20,cex=.6)  
-    points(studies.dat[friends[1],"component_1"],studies.dat[friends[1],"component_2"],bg="white",pch=21,cex=.85)
-    
-    
-  nr.base.plot(studies.dat[,c("component_1","component_3")],xlab="Component 1",ylab="Component 3",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
-    points(studies.dat[friends[-1],"component_1"],studies.dat[friends[-1],"component_3"],col="black",pch=20,cex=.6)  
-    points(studies.dat[friends[1],"component_1"],studies.dat[friends[1],"component_3"],bg="white",pch=21,cex=.85)
-  
-  nr.base.plot(studies.dat[,c("component_4","component_5")],xlab="Component 4",ylab="Component 5",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
-    points(studies.dat[friends[-1],"component_4"],studies.dat[friends[-1],"component_5"],col="black",pch=20,cex=.6)  
-    points(studies.dat[friends[1],"component_4"],studies.dat[friends[1],"component_5"],bg="white",pch=21,cex=.85)
-  
 }
 
-stems.plot.panel <- function(stems.dat, stems.friends,color.selector=2,stem="truth",number.of.neighbors=10,alpha=.5){
+stems.plot.panel <- function(stems.dat, stems.friends,color.selector=2,stem="truth",number.of.neighbors=10,alpha=.5,x.axis=1,y.axis=2){
   
   if(color.selector==1){
     col <- stems.dat$color
@@ -88,24 +92,30 @@ stems.plot.panel <- function(stems.dat, stems.friends,color.selector=2,stem="tru
     col <- "grey80"
   }
   
+  #warn.user <- F
   if( !(stem %in% stems.dat[,'word']) ){
-    stem <- sample(stems.dat[,'word'],1,1)
+    #stem <- sample(stems.dat[,'word'],1,1)
+    #warn.user <- T
+    nr.base.plot(stems.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+    return(T)
+  }else{
+    friends <- stems.friends[stem,1:(number.of.neighbors+1)]
+  
+    ## I need a real base plot for each...
+    #par(mfrow=c(2,2),oma=c(0,0,0,0))
+    nr.base.plot(stems.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+      points(stems.dat[friends[-1],paste0("component_",x.axis)],stems.dat[friends[-1],paste0("component_",y.axis)],col="black",pch=20,cex=.6)  
+      points(stems.dat[friends[1],paste0("component_",x.axis)],stems.dat[friends[1],paste0("component_",y.axis)],bg="white",pch=21,cex=.85)
+    
+    # nr.base.plot(stems.dat[,c("component_1","component_3")],xlab="Component 1",ylab="Component 3",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+    #   points(stems.dat[friends[-1],"component_1"],stems.dat[friends[-1],"component_3"],col="black",pch=20,cex=.6)  
+    #   points(stems.dat[friends[1],"component_1"],stems.dat[friends[1],"component_3"],bg="white",pch=21,cex=.85)
+    # 
+    # nr.base.plot(stems.dat[,c("component_4","component_5")],xlab="Component 4",ylab="Component 5",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+    #   points(stems.dat[friends[-1],"component_4"],stems.dat[friends[-1],"component_5"],col="black",pch=20,cex=.6)  
+    #   points(stems.dat[friends[1],"component_4"],stems.dat[friends[1],"component_5"],bg="white",pch=21,cex=.85)  
+    # 
+    return(F)
   }
-  friends <- stems.friends[stem,1:(number.of.neighbors+1)]
-  
-  ## I need a real base plot for each...
-  par(mfrow=c(2,2),oma=c(0,0,0,0))
-  nr.base.plot(stems.dat[,c("component_1","component_2")],xlab="Component 1",ylab="Component 2",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
-    points(stems.dat[friends[-1],"component_1"],stems.dat[friends[-1],"component_2"],col="black",pch=20,cex=.6)  
-    points(stems.dat[friends[1],"component_1"],stems.dat[friends[1],"component_2"],bg="white",pch=21,cex=.85)
-  
-  nr.base.plot(stems.dat[,c("component_1","component_3")],xlab="Component 1",ylab="Component 3",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
-    points(stems.dat[friends[-1],"component_1"],stems.dat[friends[-1],"component_3"],col="black",pch=20,cex=.6)  
-    points(stems.dat[friends[1],"component_1"],stems.dat[friends[1],"component_3"],bg="white",pch=21,cex=.85)
-  
-  nr.base.plot(stems.dat[,c("component_4","component_5")],xlab="Component 4",ylab="Component 5",col=add.alpha(col,alpha=alpha),pch=20,axes=F)
-    points(stems.dat[friends[-1],"component_4"],stems.dat[friends[-1],"component_5"],col="black",pch=20,cex=.6)  
-    points(stems.dat[friends[1],"component_4"],stems.dat[friends[1],"component_5"],bg="white",pch=21,cex=.85)  
-  
 }
   
