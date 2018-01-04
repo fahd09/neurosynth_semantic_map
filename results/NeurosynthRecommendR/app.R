@@ -10,6 +10,13 @@ random.pmid <- studies$pubmed[random.pmid.loc]
 random.stem.loc <- sample(length(words$word),1)
 random.stem <- words$word[random.stem.loc]
 
+random.year.loc <- sample(length(studies$year),1)
+random.year <- studies$year[random.year.loc]
+
+random.journal.loc <- sample(length(studies$journal),1)
+random.journal <- studies$journal[random.journal.loc]
+
+
 # Define UI ----
 ui <- fluidPage(
   
@@ -19,8 +26,25 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
       #helpText("Choose your own adventure"),
-      #selectInput("which.visual","Choose visualizer type",choices=list("Papers (PMIDs)","Words (stems)","Publication Year","Journal"),selected=1),
-      textInput("pmid.or.word", label = "PMID/Stem input", value = "19789183"),
+      selectInput("whichvisual","Choose visualizer type",choices=list("Papers (PMIDs)"="papers","Words (stems)"="words","Publication Year"="pubs","Journal"="journals"),selected=1),
+      conditionalPanel(
+        condition="input.whichvisual=='papers'",
+        #selectInput("pmid.or.word_dropdown", "Choose paper", choices = studies$pubmed, selected = random.pmid)
+        textInput("pmid", label = "Input PMID:", value = "19789183")
+      ),
+      conditionalPanel(
+        condition="input.whichvisual=='words'",
+        #selectInput("pmid.or.word_dropdown", "Choose word", choices = words$word, selected = random.stem)
+        textInput("word", label = "Input stem:", value = "truth")
+      ),
+      conditionalPanel(
+        condition="input.whichvisual=='pubs'",
+        selectInput("years_dropdown", "Choose publication year", choices = studies$year, selected = 1)
+      ),
+      conditionalPanel(
+        condition="input.whichvisual=='journals'",
+        selectInput("journals_dropdown", "Choose journal", choices = studies$journal, selected = 1)
+      ),      
       #selectInput("pmid.or.word_dropdown", "Choose paper/word", choices = studies$pubmed, selected = random.pmid),
       radioButtons("papers.or.words", label = "Study (PMID) or Stem (words)", choices = list("Papers" = 1, "Words" = 2),selected = 1),
       radioButtons("dot.colors", label = "Color scheme", choices = list("Cluster colors" = 1, "Grey" = 2),selected = 2),
@@ -29,8 +53,6 @@ ui <- fluidPage(
       sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .35),
       selectInput("x.axis","X axis",choices=c(1:5), selected=1),
       selectInput("y.axis","Y axis",choices=c(1:5), selected=2)
-      ## we should add a "highlight journal" option button...
-      ## and maybe a highlight year option...
     ),
     mainPanel(
         ## ugh.
@@ -41,17 +63,29 @@ ui <- fluidPage(
 
 # Define server logic ----
 server <- function(input, output) {
-  
+
   output$nr.space <- renderPlot(
     {
-      if(input$papers.or.words==1){
-        warn.user <- studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha, input$x.axis, input$y.axis)
+
+      if(input$whichvisual=="papers"){
+        #warning(input$pmid)
+        warn.user <- studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid,input$zoom.hits,input$alpha, input$x.axis, input$y.axis)
+        if(warn.user){
+          id <- showNotification(ui=paste0(input$pmid," is not a valid choice."), duration = 3, closeButton = T,type = "error")
+        }
+      }else if(input$whichvisual=="words"){
+        #warning(input$word)
+        warn.user <- stems.plot.panel(words,words_top.101_indices,input$dot.colors,input$word,input$zoom.hits,input$alpha, input$x.axis, input$y.axis)
+        if(warn.user){
+          id <- showNotification(ui=paste0(input$word," is not a valid choice."), duration = 3, closeButton = T,type = "error")
+        }
+      }else if(input$whichvisual=="pubs"){
+        #warning(input$years_dropdown)
+      }else if(input$whichvisual=="journals"){
+        #warning(input$journals_dropdown)
       }else{
-        warn.user <- stems.plot.panel(words,words_top.101_indices,input$dot.colors,input$pmid.or.word,input$zoom.hits,input$alpha, input$x.axis, input$y.axis)
-      }
-      
-      if(warn.user){
-        id <- showNotification(ui=paste0(input$pmid.or.word," is not a valid choice."), duration = 3, closeButton = T,type = "error")
+        #warn.user <- T
+        id <- showNotification(ui="I don't know how you did that.",duration=NULL,closeButton=T,type="error")
       }
       
     }
