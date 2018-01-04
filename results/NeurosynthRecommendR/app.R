@@ -27,12 +27,14 @@ ui <- fluidPage(
       conditionalPanel(
         condition="input.whichvisual=='papers'",
         #selectInput("pmid.or.word_dropdown", "Choose paper", choices = studies$pubmed, selected = random.pmid)
-        textInput("pmid", label = "Input PMID:", value = "19789183")
+        textInput("pmid", label = "Input PMID:", value = "19789183"),
+        downloadButton("downloadPMIDs","Download similar studies")
       ),
       conditionalPanel(
         condition="input.whichvisual=='words'",
         #selectInput("pmid.or.word_dropdown", "Choose word", choices = words$word, selected = random.stem)
-        textInput("word", label = "Input stem:", value = "truth")
+        textInput("word", label = "Input stem:", value = "truth"),
+        downloadButton("downloadStems","Download similar stems")
       ),
       conditionalPanel(
         condition="input.whichvisual=='pubs'",
@@ -53,7 +55,7 @@ ui <- fluidPage(
       ),
 
       sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .35),
-      #sliderInput("cex", label = "cex (dot size)",min = .5, max = 1, value = .35),
+      sliderInput("cex", label = "cex (dot size)",min = .25, max = 1, value = .75),
       selectInput("x.axis","X axis",choices=c(1:5), selected=1),
       selectInput("y.axis","Y axis",choices=c(1:5), selected=2)
     ),
@@ -72,22 +74,22 @@ server <- function(input, output) {
 
       if(input$whichvisual=="papers"){
         #warning(input$pmid)
-        warn.user <- studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid,input$zoom.hits,input$alpha, input$x.axis, input$y.axis)
+        warn.user <- studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid,input$zoom.hits,input$alpha, input$x.axis, input$y.axis, input$cex)
         if(warn.user){
           id <- showNotification(ui=paste0(input$pmid," is not a valid choice."), duration = 3, closeButton = T,type = "error")
         }
       }else if(input$whichvisual=="words"){
         #warning(input$word)
-        warn.user <- stems.plot.panel(words,words_top.101_indices,input$dot.colors,input$word,input$zoom.hits,input$alpha, input$x.axis, input$y.axis)
+        warn.user <- stems.plot.panel(words,words_top.101_indices,input$dot.colors,input$word,input$zoom.hits,input$alpha, input$x.axis, input$y.axis, input$cex)
         if(warn.user){
           id <- showNotification(ui=paste0(input$word," is not a valid choice."), duration = 3, closeButton = T,type = "error")
         }
       }else if(input$whichvisual=="pubs"){
         #warning(input$years_dropdown)
-        years.plot.panel(studies, input$years_dropdown,alpha=input$alpha, input$x.axis, input$y.axis)
+        years.plot.panel(studies, input$years_dropdown,alpha=input$alpha, input$x.axis, input$y.axis,input$cex)
       }else if(input$whichvisual=="journals"){
         #warning(input$journals_dropdown)
-        journal.plot.panel(studies, input$journals_dropdown,alpha=input$alpha, input$x.axis, input$y.axis)
+        journal.plot.panel(studies, input$journals_dropdown,alpha=input$alpha, input$x.axis, input$y.axis,input$cex)
       }else{
         #warn.user <- T
         id <- showNotification(ui="I don't know how you did that.",duration=NULL,closeButton=T,type="error")
