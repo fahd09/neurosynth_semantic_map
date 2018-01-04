@@ -118,4 +118,31 @@ stems.plot.panel <- function(stems.dat, stems.friends,color.selector=2,stem="tru
     return(F)
   }
 }
+
+
+years.plot.panel <- function(studies.dat, which.year="1997",alpha=.5,x.axis=1,y.axis=2){
   
+  col <- "grey80"
+
+  these.studies <- which(studies.dat$year==which.year)
+  
+  #par(mfrow=c(2,2),oma=c(0,0,0,0))
+  nr.base.plot(studies.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+  points(studies.dat[these.studies,paste0("component_",x.axis)],studies.dat[these.studies,paste0("component_",y.axis)],col=add.alpha("black",alpha=min((alpha+.1),1)),pch=20,cex=.6)
+  
+
+}
+ 
+
+journal.plot.panel <- function(studies.dat, which.journal="Neuron",alpha=.5,x.axis=1,y.axis=2){
+  
+  col <- "grey80"
+  
+  these.studies <- which(studies.dat$journal==which.journal)
+  
+  #par(mfrow=c(2,2),oma=c(0,0,0,0))
+  nr.base.plot(studies.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F)
+  points(studies.dat[these.studies,paste0("component_",x.axis)],studies.dat[these.studies,paste0("component_",y.axis)],col=add.alpha("black",alpha=min((alpha+.1),1)),pch=20,cex=.6)
+  
+  
+} 

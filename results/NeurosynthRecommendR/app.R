@@ -21,11 +21,8 @@ random.journal <- studies$journal[random.journal.loc]
 ui <- fluidPage(
   
   titlePanel("Neurosynth RecommendR"),
-    ## we need some UI output to come back and then update the UI based on choices.
-      ## we can do that much later.
   sidebarLayout(
     sidebarPanel(
-      #helpText("Choose your own adventure"),
       selectInput("whichvisual","Choose visualizer type",choices=list("Papers (PMIDs)"="papers","Words (stems)"="words","Publication Year"="pubs","Journal"="journals"),selected=1),
       conditionalPanel(
         condition="input.whichvisual=='papers'",
@@ -45,12 +42,18 @@ ui <- fluidPage(
         condition="input.whichvisual=='journals'",
         selectInput("journals_dropdown", "Choose journal", choices = studies$journal, selected = 1)
       ),      
-      #selectInput("pmid.or.word_dropdown", "Choose paper/word", choices = studies$pubmed, selected = random.pmid),
-      radioButtons("papers.or.words", label = "Study (PMID) or Stem (words)", choices = list("Papers" = 1, "Words" = 2),selected = 1),
-      radioButtons("dot.colors", label = "Color scheme", choices = list("Cluster colors" = 1, "Grey" = 2),selected = 2),
-      #sliderInput("Zoom",label = "Range of interest:",min = 0, max = 100, value = c(0, 100)),
-      sliderInput("zoom.hits", label = "Number of similar items:",min = 5, max = 100, value = 5),
+      
+      conditionalPanel(
+        condition="input.whichvisual=='papers' || input.whichvisual=='words'",
+        radioButtons("dot.colors", label = "Color scheme", choices = list("Cluster colors" = 1, "Grey" = 2),selected = 2)
+      ),
+      conditionalPanel(
+        condition="input.whichvisual=='papers' || input.whichvisual=='words'",
+        sliderInput("zoom.hits", label = "Number of similar items:",min = 5, max = 100, value = 5)
+      ),
+
       sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .35),
+      #sliderInput("cex", label = "cex (dot size)",min = .5, max = 1, value = .35),
       selectInput("x.axis","X axis",choices=c(1:5), selected=1),
       selectInput("y.axis","Y axis",choices=c(1:5), selected=2)
     ),
@@ -81,8 +84,10 @@ server <- function(input, output) {
         }
       }else if(input$whichvisual=="pubs"){
         #warning(input$years_dropdown)
+        years.plot.panel(studies, input$years_dropdown,alpha=input$alpha, input$x.axis, input$y.axis)
       }else if(input$whichvisual=="journals"){
         #warning(input$journals_dropdown)
+        journal.plot.panel(studies, input$journals_dropdown,alpha=input$alpha, input$x.axis, input$y.axis)
       }else{
         #warn.user <- T
         id <- showNotification(ui="I don't know how you did that.",duration=NULL,closeButton=T,type="error")
