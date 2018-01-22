@@ -69,19 +69,38 @@ ui <- fluidPage(
 # Define server logic ----
 server <- function(input, output) {
 
+  grabData <- reactive({
+    if(input$whichvisual=="papers"){
+      if( !(input$pmid %in% studies[,'pubmed']) ){
+        return(NULL)
+      }else{
+        return(studies[studies_top.101_indices[input$pmid,1:(input$zoom.hits+1)],])
+      }
+    }else if(input$whichvisual=="words"){
+      if( !(input$word %in% words[,'word']) ){
+        return(NULL)
+      }else{
+        return(words[words_top.101_indices[input$word,1:(input$zoom.hits+1)],])
+      }
+    }else{
+      return(NULL)
+    }
+    
+  })  
+  
   output$nr.space <- renderPlot(
     {
 
       if(input$whichvisual=="papers"){
         #warning(input$pmid)
-        warn.user <- studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid,input$zoom.hits,input$alpha, input$x.axis, input$y.axis, input$cex)
-        if(warn.user){
+        studies.ret <- studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid,input$zoom.hits,input$alpha, input$x.axis, input$y.axis, input$cex)
+        if(studies.ret$message=="invalid"){
           id <- showNotification(ui=paste0(input$pmid," is not a valid choice."), duration = 3, closeButton = T,type = "error")
         }
       }else if(input$whichvisual=="words"){
         #warning(input$word)
-        warn.user <- stems.plot.panel(words,words_top.101_indices,input$dot.colors,input$word,input$zoom.hits,input$alpha, input$x.axis, input$y.axis, input$cex)
-        if(warn.user){
+        stems.ret <- stems.plot.panel(words,words_top.101_indices,input$dot.colors,input$word,input$zoom.hits,input$alpha, input$x.axis, input$y.axis, input$cex)
+        if(stems.ret$message=="invalid"){
           id <- showNotification(ui=paste0(input$word," is not a valid choice."), duration = 3, closeButton = T,type = "error")
         }
       }else if(input$whichvisual=="pubs"){
@@ -97,6 +116,23 @@ server <- function(input, output) {
       
     }
   )
+  
+  output$downloadPMIDs <- downloadHandler(
+    filename = function() { 
+      paste0("Top_",nrow(grabData()),"_PMIDS_", Sys.Date(), ".csv")
+    },
+    content = function(file) {
+      write.csv(grabData(), file,row.names = F,quote=T)
+    })
+  
+  output$downloadStems <- downloadHandler(
+    filename = function() { 
+      paste0("Top_",nrow(grabData()),"_Stems_", Sys.Date(), ".csv")
+    },
+    content = function(file) {
+      write.csv(grabData(), file,row.names = F, quote=T)
+    })
+  
 }
 
 # Run the app ----

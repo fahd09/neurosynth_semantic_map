@@ -34,6 +34,7 @@ entry.and.neighbors <- function(dat,entry=NA,number.of.neighbors=10){
   return(order(euc.dists)[1:(number.of.neighbors+1)]) #should be the full set. top is the entry.
 }
 
+
 studies.plot.panel <- function(studies.dat, studies.friends,color.selector=2,pmid="19789183",number.of.neighbors=10,alpha=.5,x.axis=1,y.axis=2,cex=.75){
  
   if(color.selector==1){
@@ -44,14 +45,15 @@ studies.plot.panel <- function(studies.dat, studies.friends,color.selector=2,pmi
   
   if( !(pmid %in% studies.dat[,'pubmed']) ){
     nr.base.plot(studies.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F,cex=cex)
-    return(T)
+    return(list(message="invalid",results=NULL))
   }else{
     friends <- studies.friends[pmid,1:(number.of.neighbors+1)]
-      
+    
     nr.base.plot(studies.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F,cex=cex)
     points(studies.dat[friends[-1],paste0("component_",x.axis)],studies.dat[friends[-1],paste0("component_",y.axis)],col="black",bg="grey80",pch=21,cex=cex*1.25)  
     points(studies.dat[friends[1],paste0("component_",x.axis)],studies.dat[friends[1],paste0("component_",y.axis)],bg="red",pch=21,cex=1.5)
-    return(F)
+    
+    return(list(message="valid",results=studies.dat[friends,]))
   }
 }
 
@@ -65,14 +67,14 @@ stems.plot.panel <- function(stems.dat, stems.friends,color.selector=2,stem="tru
   
   if( !(stem %in% stems.dat[,'word']) ){
     nr.base.plot(stems.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F,cex=cex)
-    return(T)
+    return(list(message="invalid",results=NULL))
   }else{
     friends <- stems.friends[stem,1:(number.of.neighbors+1)]
   
     nr.base.plot(stems.dat[,c(paste0("component_",x.axis),paste0("component_",y.axis))],xlab=paste0("Component ",x.axis),ylab=paste0("Component ",y.axis),col=add.alpha(col,alpha=alpha),pch=20,axes=F,cex=cex)
     points(stems.dat[friends[-1],paste0("component_",x.axis)],stems.dat[friends[-1],paste0("component_",y.axis)],col="black",bg="grey80",pch=21,cex=cex*1.25)  
     points(stems.dat[friends[1],paste0("component_",x.axis)],stems.dat[friends[1],paste0("component_",y.axis)],bg="red",pch=21,cex=1.5)
-    return(F)
+    return(list(message="valid",results=stems.dat[friends,]))
   }
 }
 
