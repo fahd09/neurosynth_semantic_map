@@ -433,9 +433,11 @@ g<-ggplot(p.dat , aes(x=Year,y=Publications, group=Cluster)) +
   geom_line(aes(color=Cluster), size=1)+
   scale_x_discrete(limits=c(2000,2005,2010,2014)) +
   theme_bw() +
-  labs(x="Year", y="% of studeis", title="Relative Frequency of Studies\nBy Year By Cluster")
+  labs(x="Year", y="% of studies", title="Relative Frequency of Studies\nBy Year By Cluster") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 ggsave("./plots/temporal_trends.png",g)
+ggsave("./plots/temporal_trends.tiff",g)
 #write.csv(year_clust_raw, paste0(data_dir, '/year_clust_raw.csv'))
 #write.csv(year_clust_freq, paste0(data_dir, '/year_clust_freq.csv'))
 
