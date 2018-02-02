@@ -2,7 +2,7 @@
 
 This repository contains all the analysis code to reproduce/explore the (currently) bioarxiv manuscript "The Latent Semantic Space and Corresponding Brain Regions of the Functional Neuroimaging Literature" [doi: 10.1101/157826](https://doi.org/10.1101/157826).
 
-![NeurosynthRecommendR](NeurosynthRecommendR.png =600x600)
+![NeurosynthRecommendR](NeurosynthRecommendR.png&s=400) 
 
 We recommend that you start with the [Neurosynth RecommendR application](http://bit.ly/neurosanity) that works as a recommendation engine for functional neuroimaging papers. This recommendation tool uses a distance-based search to retrieve papers (PMIDs) that are the most semantically similar to a given paper (PMID). You only need to provide: (1) a PMID of a paper of interest. Additionally, in the same way as the papers, you can also enter a term of interest and retrieve the closest terms.
 
