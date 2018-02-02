@@ -20,7 +20,7 @@ random.journal <- studies$journal[random.journal.loc]
 # Define UI ----
 ui <- fluidPage(
   
-  titlePanel("Neurosynth RecommendR"),
+  titlePanel("Neurosynth RecommendR (beta release)"),
   helpText("Created by Derek Beaton",
   a("(@derek__beaton)", href='https://twitter.com/derek__beaton'),
   "& Fahd Alhazmi",
