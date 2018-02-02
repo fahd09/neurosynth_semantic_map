@@ -21,6 +21,15 @@ random.journal <- studies$journal[random.journal.loc]
 ui <- fluidPage(
   
   titlePanel("Neurosynth RecommendR"),
+  helpText("Created by Derek Beaton",
+  a("(@derek__beaton)", href='https://twitter.com/derek__beaton'),
+  "& Fahd Alhazmi",
+  a("(@fahd09)", href='https://twitter.com/fahd09'),
+  ". See our ",
+  a("paper", href='https://www.biorxiv.org/content/early/2017/07/20/157826'),
+  "or ",
+  a("Github repository", href='https://github.com/fahd09/neurosynth_semantic_map'),
+  "for more details about the dataset and methodology."),
   sidebarLayout(
     sidebarPanel(
       selectInput("whichvisual","Choose visualizer type",choices=list("Papers (PMIDs)"="papers","Words (stems)"="words","Publication Year"="pubs","Journal"="journals"),selected=1),
