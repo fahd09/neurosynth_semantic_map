@@ -22,20 +22,23 @@ ui <- fluidPage(
   
   titlePanel("Neurosynth RecommendR (beta release)"),
   helpText("Created by Derek Beaton",
-  a("(@derek__beaton)", href='https://twitter.com/derek__beaton'),
-  "& Fahd Alhazmi",
-  a("(@fahd09)", href='https://twitter.com/fahd09'),
-  ". See our ",
-  a("paper", href='https://www.biorxiv.org/content/early/2017/07/20/157826'),
-  "or ",
-  a("Github repository", href='https://github.com/fahd09/neurosynth_semantic_map'),
-  "for more details about the dataset and methodology."),
+           a("(@derek__beaton)", href='https://twitter.com/derek__beaton', target="_blank"),
+           "& Fahd Alhazmi",
+           a("(@fahd09)", href='https://twitter.com/fahd09', target="_blank"),
+           ". See our ",
+           a("paper", href='https://www.biorxiv.org/content/early/2017/07/20/157826', target="_blank"),
+           "or ",
+           a("Github repository", href='https://github.com/fahd09/neurosynth_semantic_map', target="_blank"),
+           "for more details about the dataset and methodology."),
   sidebarLayout(
     sidebarPanel(
       selectInput("whichvisual","Choose visualizer type",choices=list("Papers (PMIDs)"="papers","Words (stems)"="words","Publication Year"="pubs","Journal"="journals"),selected=1),
       conditionalPanel(
         condition="input.whichvisual=='papers'",
         #selectInput("pmid.or.word_dropdown", "Choose paper", choices = studies$pubmed, selected = random.pmid)
+        helpText("Note: to search the papers database, we recommend that you copy the PMID of your favorite study from",
+                 a("the Neurosynth database",href="http://neurosynth.org/studies/", target="_blank"), 
+                 ", and then paste it in here."),
         textInput("pmid", label = "Input PMID:", value = "19789183"),
         downloadButton("downloadPMIDs","Download similar studies")
       ),
