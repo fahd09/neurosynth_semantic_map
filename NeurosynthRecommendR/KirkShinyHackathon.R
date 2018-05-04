@@ -1,12 +1,6 @@
-#Code for building Shiny App 
+#Code for building Shiny App ####
 
 library(shiny)
-
-#  load("/Users/anna-maria.stavridis/Desktop/studies_top.101_indices.rda")
-#  load("/Users/anna-maria.stavridis/Desktop/studies.rda")
-# load("/Users/anna-maria.stavridis/Desktop/words_top.101_indices.rda")
-# load("/Users/anna-maria.stavridis/Desktop/words.rda")
-# setwd("~/neurosynth_semantic_map/NeurosynthRecommendR")
 
 load('./data/studies.rda')
 load('./data/words.rda')
@@ -48,7 +42,8 @@ ui <- fluidPage(
       conditionalPanel(
         condition="input.whichvisual=='papers'",
         #selectInput("pmid.or.word_dropdown", "Choose paper", choices = studies$pubmed, selected = random.pmid)
-        helpText("Note: to search the papers database, we recommend that you copy the PMID of your favorite study from",
+        helpText("Note: to search the papers database, we recommend that you copy the PMID of your 
+                 favorite study from",
                  a("the Neurosynth database",href="http://neurosynth.org/studies/", target="_blank"), 
                  ", and then paste it in here."),
         textInput("pmid", label = "Input PMID:", value = "19789183"),
@@ -57,15 +52,21 @@ ui <- fluidPage(
       conditionalPanel(
         condition="input.whichvisual=='words'",
         #selectInput("pmid.or.word_dropdown", "Choose word", choices = words$word, selected = random.stem)
+        helpText("This will plot word stems. Input a word stem you are interested in. Use lowercase letters. 
+                 Close words are likely to co-occur together. For a full list of word stem options go ",
+                 a("here", href="https://github.com/fahd09/neurosynth_semantic_map/tree/master/NeurosynthRecommendR/data", target="_blank"),
+                 " and download words.rda"),
         textInput("word", label = "Input stem:", value = "truth"),
         downloadButton("downloadStems","Download similar stems")
       ),
       conditionalPanel(
         condition="input.whichvisual=='pubs'",
+        helpText("This will display all of the articles published in the year you select from the menu below."),
         selectInput("years_dropdown", "Choose publication year", choices = studies$year, selected = 1)
       ),
       conditionalPanel(
         condition="input.whichvisual=='journals'",
+        helpText("This will display all of the articles of the journal you select from the menu below."),
         selectInput("journals_dropdown", "Choose journal", choices = studies$journal, selected = 1)
       ),      
       
@@ -77,7 +78,6 @@ ui <- fluidPage(
         condition="input.whichvisual=='papers' || input.whichvisual=='words'",
         sliderInput("zoom.hits", label = "Number of similar items:",min = 5, max = 100, value = 5)
       ),
-      
       sliderInput("alpha", label = "Color alpha levels:",min = 0, max = 1, value = .35),
       sliderInput("cex", label = "cex (dot size)",min = .25, max = 1, value = .75),
       selectInput("x.axis","X axis",choices=c(1:5), selected=1),
@@ -87,7 +87,7 @@ ui <- fluidPage(
       ## ugh.
       plotOutput("nr.space",height="700px",width="700px")
     )
-  )
+      )
 )
 
 # Define server logic ----
@@ -118,6 +118,7 @@ server <- function(input, output) {
       if(input$whichvisual=="papers"){
         #warning(input$pmid)
         studies.ret <- studies.plot.panel(studies,studies_top.101_indices,input$dot.colors,input$pmid,input$zoom.hits,input$alpha, input$x.axis, input$y.axis, input$cex)
+        
         if(studies.ret$message=="invalid"){
           id <- showNotification(ui=paste0(input$pmid," is not a valid choice."), duration = 3, closeButton = T,type = "error")
         }
