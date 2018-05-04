@@ -2,10 +2,11 @@
 
 library(shiny)
 
- load("/Users/anna-maria.stavridis/Desktop/studies_top.101_indices.rda")
- load("/Users/anna-maria.stavridis/Desktop/studies.rda")
-load("/Users/anna-maria.stavridis/Desktop/words_top.101_indices.rda")
-load("/Users/anna-maria.stavridis/Desktop/words.rda")
+#  load("/Users/anna-maria.stavridis/Desktop/studies_top.101_indices.rda")
+#  load("/Users/anna-maria.stavridis/Desktop/studies.rda")
+# load("/Users/anna-maria.stavridis/Desktop/words_top.101_indices.rda")
+# load("/Users/anna-maria.stavridis/Desktop/words.rda")
+# setwd("~/neurosynth_semantic_map/NeurosynthRecommendR")
 
 load('./data/studies.rda')
 load('./data/words.rda')

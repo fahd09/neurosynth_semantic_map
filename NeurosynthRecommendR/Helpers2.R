@@ -16,7 +16,7 @@ nr.base.plot <- function(dat,...){
   
   xy.lims <- apply(dat,2,range) * 1.1
   plot(dat,xlim=xy.lims[,1],ylim=xy.lims[,2],asp=1,...)
-  if(  legend("bottomleft", inset=.05, title="Cluster Colors",
+  legend("bottomleft", inset=.05, title="Cluster Colors",
               c("Knowledge+Language","Development","Sensorymotor", "Cognition", "Decisions+Emotion", "Genetics"), fill=c("#F8766D","#B79F00", "#00BA38", "#00BFC4", "#619CFF", "#F564E3"))
        abline(h=0,lty=2,col="grey80")
        abline(v=0,lty=2,col="grey80")  
